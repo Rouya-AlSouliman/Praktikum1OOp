@@ -9,20 +9,36 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import factory.ConcreteCreatorA;
 import factory.ConcreteCreatorB;
 import factory.Creator;
 import factory.Product;
+import ownUtil.Observable;
+import ownUtil.Observer;
 
 
 
 
 
 
-public class MoebelModel {
+public class MoebelModel implements Observable {
 
 	
+	ArrayList <Observer> liste=new ArrayList<Observer>();
+	
+	private static MoebelModel theInstance;
+	
+	private MoebelModel() {
+		
+	}
+	public static MoebelModel getInstance() {
+		if(theInstance == null) {
+			theInstance=new MoebelModel();
+		}
+		return theInstance;
+	}
 	
 	private Moebelhaus moebel;
 	
@@ -35,7 +51,9 @@ public class MoebelModel {
 
 	public void setMoebel(Moebelhaus moebel) {
 		this.moebel = moebel;
+		 notifyObserver() ;
 	}
+	
 	
 	
 	
@@ -57,6 +75,7 @@ public class MoebelModel {
 				zeile[1], 
 				zeile[2], 
 				Double.parseDouble(zeile[3]), zeile[4].split("_"));
+			 notifyObserver() ;
 			reader.schliessDatei();
 		  
 	
@@ -77,11 +96,31 @@ public class MoebelModel {
 	      		public void schreibeMoebelhausnCsvDatei() throws IOException {
 	      			
 	      				BufferedWriter aus 
-	      					= new BufferedWriter(new FileWriter("MoebelhausAusgabe.csv"));
+	      					= new BufferedWriter(new FileWriter("MoebelhausAusgabe.txt"));
 	      				aus.write(moebel.gibMoebelhausZurueck(';'));
 	      				
 	      				aus.close();
 	      			}
+				@Override
+				public void addObserver(Observer obs) {
+					// TODO Auto-generated method stub
+					liste.add(obs);
+					
+				}
+				@Override
+				public void removeObserver(Observer obs) {
+					// TODO Auto-generated method stub
+					liste.remove(obs);
+					
+				}
+				@Override
+				public void notifyObserver() {
+					// TODO Auto-generated method stub
+					for(Observer ob : liste) {
+						ob.update();
+					}
+					
+				}
 	
 	      		
 }

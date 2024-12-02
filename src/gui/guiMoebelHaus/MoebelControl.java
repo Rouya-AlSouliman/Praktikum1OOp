@@ -1,4 +1,4 @@
-package gui;
+package gui.guiMoebelHaus;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,8 +9,9 @@ import java.io.IOException;
 import business.MoebelModel;
 import business.Moebelhaus;
 import javafx.stage.Stage;
+import ownUtil.Observer;
 
-public class MoebelControl {
+public class MoebelControl implements Observer {
 
 	
 	private MoebelModel moebelmodel;
@@ -22,10 +23,12 @@ public class MoebelControl {
 
 	 public MoebelControl(Stage primaryStage) {
 		super();
-		this.moebelmodel=new MoebelModel();
+		this.moebelmodel=MoebelModel.getInstance();
 		this.moebelview=new MoebelView(this,moebelmodel, primaryStage );
+		moebelmodel.addObserver(this);
 		
 	}
+	 
 
 
 	 
@@ -73,12 +76,21 @@ public class MoebelControl {
 	    			this.moebelview.getTxtStil().getText(),
 	    		   Double.parseDouble(this.moebelview.getTxtSPreis().getText()),
 	    		   this.moebelview.getTxtMaterial().getText().split(";")));
-	    		this.moebelview.zeigeInformationsfensterAn("Das Moebel wurde aufgenommen!");
+	    		//this.moebelview.zeigeInformationsfensterAn("Das Moebel wurde aufgenommen!");
 	       	}
 	       	catch(Exception exc){
 	       		this.moebelview.zeigeFehlermeldungsfensterAn(exc.getMessage());
 	     	}
 	    }
+
+
+
+	@Override
+	public void update() {
+		 moebelview.zeigeMoebelhausAn();
+		
+		
+	}
 	
 	
 	

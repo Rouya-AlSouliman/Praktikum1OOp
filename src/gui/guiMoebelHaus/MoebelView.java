@@ -1,4 +1,4 @@
-package gui;
+package gui.guiMoebelHaus;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -121,6 +121,7 @@ public class MoebelView {
 	    	txtAnzeige.setPrefHeight(185);
 	       	pane.getChildren().add(txtAnzeige); 
 	       	
+	       	
 	        // Buttons
 	        btnEingabe.setLayoutX(20);
 	        btnEingabe.setLayoutY(290);
@@ -172,7 +173,7 @@ public class MoebelView {
 	    
 	   
 	   
-	    private void zeigeMoebelhausAn(){
+	    public void zeigeMoebelhausAn(){
 	    	if(this.moebelmodel.getMoebel() != null){
 	    		txtAnzeige.setText(
 	    				this.moebelmodel.getMoebel().gibMoebelhausZurueck(' '));
